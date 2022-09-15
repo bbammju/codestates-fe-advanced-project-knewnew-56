@@ -55,7 +55,7 @@ const LoginContainer = styled.div`
 `
 
 const Logo = styled.img`
-  width: 20vw;
+  width: 17vw;
   height: 12vh;
   display: flex;
   justify-content: center;
