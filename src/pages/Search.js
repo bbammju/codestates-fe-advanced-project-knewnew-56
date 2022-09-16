@@ -16,7 +16,9 @@ const Main = () => {
   const [indexOfLastPost, setIndexOfLastPost] = useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
   const [currentPosts, setCurrentPosts] = useState([]);
-
+  const checkHandler = (e) => {
+    setCheck(e.target.value)
+  }
   const keywordHandler = (e) => {
     setKeyword(e.target.value)
   }
@@ -67,8 +69,12 @@ const Main = () => {
 
   return(
     <Container>
-      <Logo src={logo}/>
+      <Logo src={logo} onClick={() => {navigate('/main')}}/>
       <SearchContainer>
+        <select name="option" onChange={(e) => {checkHandler(e)}}>
+          <option value='user'>사용자</option>
+          <option value='review'>리뷰</option>
+        </select>
         <Search onKeyUp={(e) => {keywordHandler(e)}}/>
         <Searchbtn onClick={() => {searchHandler()}}>?</Searchbtn>
       </SearchContainer>

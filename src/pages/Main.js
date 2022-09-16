@@ -4,12 +4,21 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from '../assets/knew.png'
 import { Paging } from "../components/paging";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { useStore } from '../zustand/store'
-import 'swiper/css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 
 const Main = () => {
+  const settings = {
+    dots: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
+
   const navigate = useNavigate()
   const {keyword, setKeyword, check, setCheck} = useStore()
   const [items, setItems] = useState([]) //리스트에 나타낼 아이템
@@ -37,7 +46,7 @@ const Main = () => {
   const accessToken = window.localStorage.getItem('accessToken')
   const requestdata = async () => {
     try {
-      const listdata = await axios.get(`https://dev.knewnnew.com/review/`, {
+      const listdata = await axios.get(`https://dev.knewnnew.com/review/?limit=100`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }
@@ -79,22 +88,14 @@ const Main = () => {
       </SearchContainer>
       <ContentContainer> 
       {currentPosts && items.length > 0 ? (
-       currentPosts.map((item)=> (
+       currentPosts.map((item) => (
         <div key={item.created}>
            {isopen === true ? <ModalBackdrop>
             <ModalContainer>
-              <button onClick={() => {openModalHandler()}}>sdsdsd</button>
-              <Swiper spaceBetween={50}
-                slidesPerView={1}
-              >            
-                {item.images.map((el) => {
-                  return(
-                    <SwiperSlide>
-                      <ModalImg src={el.image}></ModalImg>
-                    </SwiperSlide>
-                  )
-                })}            
-              </Swiper>
+              <ModalClose onClick={() => {openModalHandler()}} style={{color : "#FFFFFF"}}>X</ModalClose>
+              <StyledSlider {...settings}>            
+                {item.images.map((el) => <ModalImg src={el.image}/>)}            
+              </StyledSlider>
             </ModalContainer>
           </ModalBackdrop> : null}
           <Content>
@@ -180,9 +181,11 @@ const InfoContainer = styled.div`
 const Info = styled.div`
   width: 20vw;
   height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 5px;
 `
 
 const Info1 = styled.div`
@@ -210,7 +213,7 @@ const ModalContainer = styled.div`
   height: 60vh;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-image: linear-gradient(#FFA29B, #FF4848, #FF7070);
   align-items: center;
   justify-content: center;
 `
@@ -218,6 +221,15 @@ const ModalContainer = styled.div`
 const ModalImg = styled.img`
   width: 33vw;
   height: 50vh;
+`
+
+const ModalClose = styled.button`
+  width: 3vw;
+  height: 5vh;
+  margin-left: auto;
+  border: 2px solid;
+  border-color: white;
+  background-color: transparent;
 `
 
 const SearchContainer = styled.div`
@@ -238,3 +250,28 @@ const Searchbtn = styled.button`
   height: 5.5vh;
 
 `
+
+const StyledSlider = styled(Slider)`
+   height: 90vh; //슬라이드 컨테이너 영역
+
+  .slick-list {  //슬라이드 스크린
+    width: 30vw;
+    height: 50vh;
+    margin: 0 auto;
+    overflow-x: hidden;
+    background: white;
+  }
+
+  .slick-slide div { //슬라이더  컨텐츠
+    cursor: pointer;
+  }
+
+  .slick-dots {  //슬라이드의 위치
+    bottom: 20px;
+    margin-top: 200px;
+  }
+
+  .slick-track { //이건 잘 모르겠음
+    width: 100%;
+  }
+`;
