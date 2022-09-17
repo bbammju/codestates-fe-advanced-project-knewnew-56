@@ -9,6 +9,7 @@ export const Container = styled.div`
   border: 3px solid;
   border-color: #FF796F;
   box-shadow: 5px 5px 3px #FF4848;
+  border-radius: 1rem;
 `
 
 export const Logo = styled.img`
@@ -35,6 +36,7 @@ export const Content = styled.div`
   margin: 5px;
   border: 1px solid;
   background-color: #FFE5E5;
+  border-radius: 8px;
 `
 
 export const Thumbnail = styled.img`
@@ -113,6 +115,9 @@ export const SearchContainer = styled.div`
 export const Search = styled.input`
   width: 40vw;
   height: 5vh;
+  border-radius: 8px;
+  border: 1px solid;
+  border-color: #FF4848;
 `
 
 export const Searchbtn = styled.button`
@@ -122,4 +127,5 @@ export const Searchbtn = styled.button`
   border-color: #FF4848;
   font-size: 1.3rem;
   background-color: transparent;
+  border-radius: 8px;
 `
