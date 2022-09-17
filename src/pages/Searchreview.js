@@ -6,9 +6,18 @@ import logo from '../assets/knew.png'
 import { Paging } from "../components/paging";
 import { useStore } from '../zustand/store'
 import Radio from '../components/radio';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Container, Logo, ContentContainer, Content, Thumbnail, InfoContainer, Info, Info1, ModalBackdrop, ModalContainer, ModalImg, ModalClose, SearchContainer, Search, Searchbtn } from "../components/container";
 
 const Main = () => {
-  
+  const settings = {
+    dots: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
   const navigate = useNavigate()
   const {keyword, setKeyword, check, setCheck} = useStore()
   const [items, setItems] = useState([]) //리스트에 나타낼 아이템
@@ -18,7 +27,10 @@ const Main = () => {
   const [indexOfLastPost, setIndexOfLastPost] = useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
   const [currentPosts, setCurrentPosts] = useState([]);
-  
+  const [isopen, setIsopen] = useState(false)
+  const openModalHandler = () => {
+    setIsopen(!isopen);
+  };
   const keywordHandler = (e) => {
     setKeyword(e.target.value)
   }
@@ -70,17 +82,26 @@ const Main = () => {
       <Logo src={logo} onClick={() => {navigate('/main')}}/>
       <SearchContainer>
         <Radio/>
-        <Search onKeyUp={(e) => {keywordHandler(e)}}/>
-        <Searchbtn onClick={() => {searchHandler()}}>?</Searchbtn>
+        <Search onKeyUp={(e) => {keywordHandler(e)}} placeholder='검색어를 입력하세요'/>
+        <Searchbtn onClick={() => {searchHandler()}} style={{color : "#FF4848"}}>?</Searchbtn>
       </SearchContainer>
       <ContentContainer> 
       
        {currentPosts.map((item)=> (
         <div key={item.created}>
+          {isopen === true ? <ModalBackdrop>
+            <ModalContainer>
+              <ModalClose onClick={() => {openModalHandler()}} style={{color : "#FFFFFF"}}>X</ModalClose>
+              <StyledSlider {...settings}>            
+              {item.images.map((el) => <ModalImg src={el.image}/>)}  
+                       
+              </StyledSlider>
+            </ModalContainer>
+          </ModalBackdrop> : null}        
           <Content>
             {item.images?.length !== 0 ? (
               <>
-                <Thumbnail src={item.images[0].image}></Thumbnail>
+                <Thumbnail src={item.images[0].image} onClick={() => {openModalHandler()}}></Thumbnail>
                 <InfoContainer>
                   <Info>{item.content}</Info>
                   <Info1>{item.author.nickname}</Info1>
@@ -109,84 +130,27 @@ const Main = () => {
 
 export default Main;
 
-const Container = styled.div`
-  width: 45vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  border: 1px solid;
-`
+const StyledSlider = styled(Slider)`
+   height: 90vh; //슬라이드 컨테이너 영역
 
-const Logo = styled.img`
-  width: 15vw;
-  height: 12vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-`
+  .slick-list {  //슬라이드 스크린
+    width: 30vw;
+    height: 50vh;
+    margin: 0 auto;
+    overflow-x: hidden;
+    background: white;
+  }
 
-const ContentContainer = styled.div`
-  width: 43vw;
-  height: 75vh;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid;
-  margin: auto;
-`
+  .slick-slide div { //슬라이더  컨텐츠
+    cursor: pointer;
+  }
 
-const Content = styled.div`
-  width: 41vw;
-  height: 5vh;
-  display: flex;
-  margin: 5px;
-  border: 1px solid;
-`
+  .slick-dots {  //슬라이드의 위치
+    bottom: 20px;
+    margin-top: 200px;
+  }
 
-const Thumbnail = styled.img`
-  width: 5vw;
-  height: 5vh;
-`
-
-const InfoContainer = styled.div`
-  width: 41vw;
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-`
-const Info = styled.div`
-  width: 20vw;
-  height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const Info1 = styled.div`
-  width: 10vw;
-  height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-
-const SearchContainer = styled.div`
-  width: 43vw;
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-  margin: auto;
-`
-
-const Search = styled.input`
-  width: 40vw;
-  height: 5vh;
-`
-
-const Searchbtn = styled.button`
-  width: 4vw;
-  height: 5.5vh;
-
-`
+  .slick-track { //이건 잘 모르겠음
+    width: 100%;
+  }
+`;

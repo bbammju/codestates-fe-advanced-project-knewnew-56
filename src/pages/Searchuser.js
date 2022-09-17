@@ -6,9 +6,15 @@ import logo from '../assets/knew.png'
 import { Paging } from "../components/paging";
 import { useStore } from '../zustand/store'
 import Radio from '../components/radio';
+import { Container, Logo, ContentContainer, Content, Thumbnail, InfoContainer, Info, Info1, ModalBackdrop, ModalContainer, ModalImg, ModalClose, SearchContainer, Search, Searchbtn } from "../components/container";
 
 const Main = () => {
-  
+  const settings = {
+    dots: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
   const navigate = useNavigate()
   const {keyword, setKeyword, check, setCheck} = useStore()
   const [items, setItems] = useState([]) //리스트에 나타낼 아이템
@@ -18,6 +24,7 @@ const Main = () => {
   const [indexOfLastPost, setIndexOfLastPost] = useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
   const [currentPosts, setCurrentPosts] = useState([]);
+  
   
   const keywordHandler = (e) => {
     setKeyword(e.target.value)
@@ -70,22 +77,20 @@ const Main = () => {
       <Logo src={logo} onClick={() => {navigate('/main')}}/>
       <SearchContainer>
         <Radio/>
-        <Search onKeyUp={(e) => {keywordHandler(e)}}/>
-        <Searchbtn onClick={() => {searchHandler()}}>?</Searchbtn>
+        <Search onKeyUp={(e) => {keywordHandler(e)}} placeholder='검색어를 입력하세요'/>
+        <Searchbtn onClick={() => {searchHandler()}} style={{color : "#FF4848"}}>?</Searchbtn>
       </SearchContainer>
       <ContentContainer> 
     
       {currentPosts.map((item)=> (
         <div key={item.id}>
-          <Content>
-            <>
-              <Thumbnail src={item.profileImage}></Thumbnail>
-              <InfoContainer>
-                <Info>{item.id}</Info>
-                <Info1>{item.nickname}</Info1>
-              </InfoContainer>
-            </>
-          </Content>          
+          <Content>    
+            <Thumbnail src={item.profileImage}></Thumbnail>
+            <InfoContainer>
+              <Info>{item.id}</Info>
+              <Info1>{item.nickname}</Info1>
+            </InfoContainer>        
+          </Content>  
         </div>
       ))
      
@@ -97,85 +102,3 @@ const Main = () => {
 }
 
 export default Main;
-
-const Container = styled.div`
-  width: 45vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  border: 1px solid;
-`
-
-const Logo = styled.img`
-  width: 15vw;
-  height: 12vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-`
-
-const ContentContainer = styled.div`
-  width: 43vw;
-  height: 75vh;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid;
-  margin: auto;
-`
-
-const Content = styled.div`
-  width: 41vw;
-  height: 5vh;
-  display: flex;
-  margin: 5px;
-  border: 1px solid;
-`
-
-const Thumbnail = styled.img`
-  width: 5vw;
-  height: 5vh;
-`
-
-const InfoContainer = styled.div`
-  width: 41vw;
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-`
-const Info = styled.div`
-  width: 20vw;
-  height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const Info1 = styled.div`
-  width: 10vw;
-  height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-
-const SearchContainer = styled.div`
-  width: 43vw;
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-  margin: auto;
-`
-
-const Search = styled.input`
-  width: 40vw;
-  height: 5vh;
-`
-
-const Searchbtn = styled.button`
-  width: 4vw;
-  height: 5.5vh;
-
-`

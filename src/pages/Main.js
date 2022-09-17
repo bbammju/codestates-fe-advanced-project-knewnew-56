@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Radio from '../components/radio'
+import { Container, Logo, ContentContainer, Content, Thumbnail, InfoContainer, Info, Info1, ModalBackdrop, ModalContainer, ModalImg, ModalClose, SearchContainer, Search, Searchbtn } from "../components/container";
 
 
 const Main = () => {
@@ -86,8 +87,8 @@ const Main = () => {
       <Logo src={logo}/>
       <SearchContainer>
         <Radio/>
-        <Search onKeyUp={(e) => {keywordHandler(e)}}/>
-        <Searchbtn onClick={() => {searchHandler()}}>?</Searchbtn>
+        <Search onKeyUp={(e) => {keywordHandler(e)}} placeholder='검색어를 입력하세요'/>
+        <Searchbtn onClick={() => {searchHandler()}} style={{color : "#FF4848"}}>?</Searchbtn>
       </SearchContainer>
       <ContentContainer> 
       {currentPosts && items.length > 0 ? (
@@ -135,124 +136,7 @@ const Main = () => {
 
 export default Main;
 
-const Container = styled.div`
-  width: 45vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  border: 1px solid;
-`
 
-const Logo = styled.img`
-  width: 15vw;
-  height: 12vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-`
-
-const ContentContainer = styled.div`
-  width: 43vw;
-  height: 75vh;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid;
-  margin: auto;
-`
-
-const Content = styled.div`
-  width: 41vw;
-  height: 5vh;
-  display: flex;
-  margin: 5px;
-  border: 1px solid;
-`
-
-const Thumbnail = styled.img`
-  width: 5vw;
-  height: 5vh;
-`
-
-const InfoContainer = styled.div`
-  width: 41vw;
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-`
-const Info = styled.div`
-  width: 20vw;
-  height: 5vh;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 5px;
-`
-
-const Info1 = styled.div`
-  width: 10vw;
-  height: 5vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const ModalBackdrop = styled.div`
-  position: absolute;
-  top: 0%;
-  left: 0%;
-  bottom: 0%;
-  right: 0%;
-  background-color: rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ModalContainer = styled.div`
-  width: 45vw;
-  height: 60vh;
-  display: flex;
-  flex-direction: column;
-  background-image: linear-gradient(#FFA29B, #FF4848, #FF7070);
-  align-items: center;
-  justify-content: center;
-`
-
-const ModalImg = styled.img`
-  width: 33vw;
-  height: 50vh;
-`
-
-const ModalClose = styled.button`
-  width: 3vw;
-  height: 5vh;
-  margin-left: auto;
-  border: 2px solid;
-  border-color: white;
-  background-color: transparent;
-`
-
-const SearchContainer = styled.div`
-  width: 43vw;
-  height: 5vh;
-  display: flex;
-  justify-content: space-between;
-  margin: auto;
-`
-
-const Search = styled.input`
-  width: 40vw;
-  height: 5vh;
-`
-
-const Searchbtn = styled.button`
-  width: 4vw;
-  height: 5.5vh;
-
-`
 
 const StyledSlider = styled(Slider)`
    height: 90vh; //슬라이드 컨테이너 영역

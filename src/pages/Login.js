@@ -28,9 +28,9 @@ const Login = () => {
     <Container>
       <LoginContainer>
         <Logo src={logo}/>
-        <Email onKeyUp={emailHandler}/>
-        <Password onKeyUp={passwordHandler}/>
-        <Loginbtn onClick={() => {loginHandler()}}>로그인</Loginbtn>
+        <Email onKeyUp={emailHandler} placeholder='이메일을 입력하세요'/>
+        <Password type='password' onKeyUp={passwordHandler} placeholder='비밀번호를 입력하세요'/>
+        <Loginbtn onClick={() => {loginHandler()}} style={{color : "#FFFFFF"}}>로그인</Loginbtn>
       </LoginContainer>
     </Container>
   )
@@ -51,7 +51,9 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: auto;
-  border: 1px solid;
+  border: 3px solid;
+  border-color: #FF796F;
+  box-shadow: 5px 5px 3px #FF4848;
 `
 
 const Logo = styled.img`
@@ -70,6 +72,8 @@ const Email = styled.input`
   justify-content: center;
   align-items: center;
   margin: 25px;
+  border: 1px solid;
+  border-color: #FF4848;
 `
 const Password = styled.input`
   width: 30vw;
@@ -78,10 +82,14 @@ const Password = styled.input`
   justify-content: center;
   align-items: center;
   margin: 25px;
+  border: 1px solid;
+  border-color: #FF4848;
 `
 
 const Loginbtn = styled.button`
   width: 15vw;
   height: 5vh;
   margin: 25px;
+  background-color: #FF8E8B;
+  border: transparent
 `
