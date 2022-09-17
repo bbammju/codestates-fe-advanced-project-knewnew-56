@@ -8,10 +8,11 @@ import { useStore } from '../zustand/store'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import Radio from '../components/radio'
 
 
 const Main = () => {
+  
   const settings = {
     dots: true,
     speed: 500,
@@ -36,11 +37,15 @@ const Main = () => {
     setKeyword(e.target.value)
   }
   const searchHandler = () => {
-    navigate('/search')
+    if (check === 'user') {
+      navigate('/search/user');
+    }
+    if (check === 'review') {
+      navigate('/search/review');
+    }
+    
   }
-  const checkHandler = (e) => {
-    setCheck(e.target.value)
-  }
+
 
 
   const accessToken = window.localStorage.getItem('accessToken')
@@ -74,15 +79,13 @@ const Main = () => {
     setCurrentPosts(items.slice(indexOfFirstPost, indexOfLastPost));
   }, [currentpage, indexOfFirstPost, indexOfLastPost, items, postPerPage]);
 
+
   return(
     <Container>
+
       <Logo src={logo}/>
       <SearchContainer>
-        <select name="option" onChange={(e) => {checkHandler(e)}}>
-          <option value='user'>사용자</option>
-          <option value='review'>리뷰</option>
-        </select>
-
+        <Radio/>
         <Search onKeyUp={(e) => {keywordHandler(e)}}/>
         <Searchbtn onClick={() => {searchHandler()}}>?</Searchbtn>
       </SearchContainer>

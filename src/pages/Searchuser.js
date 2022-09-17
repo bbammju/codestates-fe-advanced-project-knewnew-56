@@ -5,8 +5,10 @@ import styled from "styled-components";
 import logo from '../assets/knew.png'
 import { Paging } from "../components/paging";
 import { useStore } from '../zustand/store'
+import Radio from '../components/radio';
 
 const Main = () => {
+  
   const navigate = useNavigate()
   const {keyword, setKeyword, check, setCheck} = useStore()
   const [items, setItems] = useState([]) //리스트에 나타낼 아이템
@@ -16,28 +18,24 @@ const Main = () => {
   const [indexOfLastPost, setIndexOfLastPost] = useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
   const [currentPosts, setCurrentPosts] = useState([]);
-  const checkHandler = (e) => {
-    setCheck(e.target.value)
-  }
+  
   const keywordHandler = (e) => {
     setKeyword(e.target.value)
   }
   const searchHandler = () => {
-    navigate('/search')
+    if (check === 'user') {
+      navigate('/search/user');
+    }
+    if (check === 'review') {
+      navigate('/search/review');
+    }
+    
   }
   const accessToken = window.localStorage.getItem('accessToken')
   const requestdata = async () => {
     try {
-      if (check === 'review') {
-        const listdata = await axios.get(`https://dev.knewnnew.com/search/review/?keyword=${keyword}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-      return listdata
-      }
-      else {
-        const listdata = await axios.get(`https://dev.knewnnew.com/search/user/?nickname=${keyword}`, {
+      if (check === 'user') {
+        const listdata = await axios.get(`https://dev.knewnnew.com/search/user/?nickname=${keyword}&limit=100`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }
@@ -71,41 +69,13 @@ const Main = () => {
     <Container>
       <Logo src={logo} onClick={() => {navigate('/main')}}/>
       <SearchContainer>
-        <select name="option" onChange={(e) => {checkHandler(e)}}>
-          <option value='user'>사용자</option>
-          <option value='review'>리뷰</option>
-        </select>
+        <Radio/>
         <Search onKeyUp={(e) => {keywordHandler(e)}}/>
         <Searchbtn onClick={() => {searchHandler()}}>?</Searchbtn>
       </SearchContainer>
       <ContentContainer> 
-      {currentPosts && check === 'review' ? (
-       currentPosts.map((item)=> (
-        <div key={item.created}>
-          <Content>
-            {item.images?.length !== 0 ? (
-              <>
-                <Thumbnail src={item.images[0].image}></Thumbnail>
-                <InfoContainer>
-                  <Info>{item.content}</Info>
-                  <Info1>{item.author.nickname}</Info1>
-                </InfoContainer>
-              </>
-            ) : ( 
-              <>
-              <Thumbnail src={logo}></Thumbnail>
-              <InfoContainer>
-                <Info>{item.content}</Info>
-                <Info1>{item.author.nickname}</Info1>
-              </InfoContainer>
-              </>
-            )}
-          </Content>          
-        </div>
-      ))
-     ) 
-     : (
-      currentPosts.map((item)=> (
+    
+      {currentPosts.map((item)=> (
         <div key={item.id}>
           <Content>
             <>
@@ -118,7 +88,7 @@ const Main = () => {
           </Content>          
         </div>
       ))
-     )
+     
 	}
      <Paging page={currentpage} count={count} setPage={setPage} />
       </ContentContainer>

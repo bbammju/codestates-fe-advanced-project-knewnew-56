@@ -1,6 +1,7 @@
 import Login from "./pages/Login";
 import Main from './pages/Main';
-import Search from './pages/Search'
+import Searchreview from './pages/Searchreview'
+import Searchuser from './pages/Searchuser'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
 function App() {
@@ -9,7 +10,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login/>}/>
         <Route path="/main" element={<Main/>}/>
-        <Route path="/search" element={<Search/>}/>
+        <Route path="/search/review" element={<Searchreview/>}/>
+        <Route path="/search/user" element={<Searchuser/>}/>
       </Routes>
     </BrowserRouter>
   );
