@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import logo from '../assets/knew.png'
 import { Paging } from "../components/paging";
 import { useStore } from '../zustand/store'
@@ -42,11 +41,8 @@ const Main = () => {
   const requestdata = async () => {
     try {
       if (check === 'user') {
-        const listdata = await axios.get(`https://dev.knewnnew.com/search/user/?nickname=${keyword}&limit=100`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
+        const listdata = await axios.get(`http://localhost:3500/userdata`)
+
       return listdata
       }
       
@@ -60,7 +56,7 @@ const Main = () => {
   };
   useEffect(() => {
     getdata.then((el) => {
-      setItems(el.data.result)
+      setItems(el.data)
     })
 
   }, []);

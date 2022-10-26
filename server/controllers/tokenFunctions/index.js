@@ -10,23 +10,11 @@ module.exports = {
     });
     return accessToken;
   },
-  generateRefreshToken: (data) => {
-    return sign(data, process.env.REFRESH_SECRET, { expiresIn: "2000s" });
-  },
+
   sendAccessToken: (res, accessToken) => {
     // TODO: JWT 토큰을 쿠키로 전달합니다.
     return res.cookie("jwt", accessToken);
     //res.json({ message: 'ok' });
-  },
-  sendRefreshToken: (res, refreshToken) => {
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-    });
-  },
-  resendAccessToken: (res, accessToken, data) => {
-    res
-      .cookie("jwt", accessToken)
-      .json({ data: { userInfo: data }, message: "ok" });
   },
   isAuthorized: (req) => {
     const authorization = req.headers["authorization"];

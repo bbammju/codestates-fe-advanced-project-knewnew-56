@@ -1,15 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import logo from '../assets/knew.png'
 import { Paging } from "../components/paging";
 import { useStore } from '../zustand/store'
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Radio from '../components/radio'
-import { Container, Logo, ContentContainer, Content, Thumbnail, InfoContainer, Info, Info1, ModalBackdrop, ModalContainer, ModalImg, ModalClose, SearchContainer, Search, Searchbtn } from "../components/container";
+import { Container, Logo, ContentContainer, Content, Thumbnail, InfoContainer, Info, Info1,SearchContainer, Search, Searchbtn } from "../components/container";
 
 
 const Main = () => {
@@ -30,10 +28,7 @@ const Main = () => {
   const [indexOfLastPost, setIndexOfLastPost] = useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
   const [currentPosts, setCurrentPosts] = useState([]);
-  const [isopen, setIsopen] = useState(false)
-  const openModalHandler = () => {
-    setIsopen(!isopen);
-  };
+
   const keywordHandler = (e) => {
     setKeyword(e.target.value)
   }
@@ -47,16 +42,9 @@ const Main = () => {
     
   }
 
-
-
-  const accessToken = window.localStorage.getItem('accessToken')
   const requestdata = async () => {
     try {
-      const listdata = await axios.get(`https://dev.knewnnew.com/review/?limit=100`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
+      const listdata = await axios.get(`http://localhost:3500/reviewdata`)
       return listdata
     }
     catch (err) { }
@@ -69,6 +57,7 @@ const Main = () => {
   useEffect(() => {
     getdata.then((el) => {
       setItems(el.data)
+      console.log(el.data)
     })
 
   }, []);
@@ -93,22 +82,14 @@ const Main = () => {
       <ContentContainer> 
       {currentPosts && items.length > 0 ? (
        currentPosts.map((item) => (
-        <div key={item.created}>
-           {isopen === true ? <ModalBackdrop>
-            <ModalContainer>
-              <ModalClose onClick={() => {openModalHandler()}} style={{color : "#FFFFFF"}}>X</ModalClose>
-              <StyledSlider {...settings}>            
-                {item.images.map((el) => <ModalImg src={el.image}/>)}            
-              </StyledSlider>
-            </ModalContainer>
-          </ModalBackdrop> : null}
+        <div key={item.createdAt}>
           <Content>
             {item.images?.length !== 0 ? (
               <>
-                <Thumbnail src={item.images[0].image} onClick={() => {openModalHandler()}}></Thumbnail>
+                <Thumbnail src={item.image}></Thumbnail>
                 <InfoContainer>
                   <Info>{item.content}</Info>
-                  <Info1>{item.author.nickname}</Info1>
+                  <Info1>{item.nickname}</Info1>
                 </InfoContainer>
               </>
             ) : ( 
@@ -137,28 +118,3 @@ const Main = () => {
 export default Main;
 
 
-
-const StyledSlider = styled(Slider)`
-   height: 90vh; //슬라이드 컨테이너 영역
-
-  .slick-list {  //슬라이드 스크린
-    width: 30vw;
-    height: 50vh;
-    margin: 0 auto;
-    overflow-x: hidden;
-    background: white;
-  }
-
-  .slick-slide div { //슬라이더  컨텐츠
-    cursor: pointer;
-  }
-
-  .slick-dots {  //슬라이드의 위치
-    bottom: 20px;
-    margin-top: 200px;
-  }
-
-  .slick-track { //이건 잘 모르겠음
-    width: 100%;
-  }
-`;

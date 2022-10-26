@@ -1,9 +1,7 @@
 const { User } = require("../models");
 const {
   generateAccessToken,
-  generateRefreshToken,
-  sendRefreshToken,
-  sendAccessToken,
+  sendAccessToken
 } = require("./tokenFunctions");
 
 module.exports = async (req, res) => {
@@ -17,13 +15,10 @@ module.exports = async (req, res) => {
     if (!data) return res.status(404).send("invalid user");
     else {
       const accessToken = generateAccessToken(data.dataValues);
-      const refreshToken = generateRefreshToken(data.dataValues);
-
-      sendRefreshToken(res, refreshToken);
       sendAccessToken(res, accessToken);
       return res
         .status(200)
-        .json({ data: accessToken, refresh: refreshToken, message: "ok" });
+        .json({ data: accessToken, message: "ok" });
     }
   } catch (err) {
     return null;

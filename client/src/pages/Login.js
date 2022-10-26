@@ -15,9 +15,9 @@ const Login = () => {
 		setPassword(e.target.value);
 	};
   const loginHandler = async () => {
-    const token = await axios.post('https://dev.knewnnew.com/auth/login/', {email: email, password: password, providerType: 'email'})
-    if (token.data.accessToken) {
-      window.localStorage.setItem('accessToken', token.data.accessToken)
+    const token = await axios.post('http://localhost:3500/login', {email: email, password: password})
+    if (token.data) {
+      window.localStorage.setItem('accessToken', token.data)
       navigate('/main')
     }
     else {
